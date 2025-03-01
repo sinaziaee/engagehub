@@ -1,4 +1,5 @@
 import os
+import requests
 # secrets
 from dotenv import load_dotenv
 # scraper
@@ -7,11 +8,25 @@ from firecrawl import FirecrawlApp
 import base64
 from google import genai
 from google.genai import types
+import my_gemini
 
 def scrape_data(website_url, api_key):
     app = FirecrawlApp(api_key=api_key)
     scrape_result = app.scrape_url(website_url, params={'formats': ['markdown', 'html']})
     return scrape_result
+
+def is_google_form(url):
+    try:
+        # Use HEAD request to follow redirects and get the final URL
+        response = requests.head(url, allow_redirects=True, timeout=5)
+        final_url = response.url
+        # Check if the final URL contains the common Google Forms path
+        if "docs.google.com/forms" in final_url:
+            return True
+        return False
+    except requests.RequestException as e:
+        print("Error:", e)
+        return False
 
 def extract_data(scraped_result, api_key):
     client = genai.Client(
@@ -50,11 +65,18 @@ def extract_data(scraped_result, api_key):
 def main():
     load_dotenv()
     api_key=os.getenv("SCRAPE_API_KEY")
-    website_url = "https://www.canada.ca/en/environment-climate-change/corporate/transparency/consultations/export-control-list-amendments.html"
+    # website_url = "https://www.canada.ca/en/environment-climate-change/corporate/transparency/consultations/export-control-list-amendments.html"
+    website_url = "https://docs.google.com/forms/d/e/1FAIpQLSevpX3IMNw07QMPJgj7-Q6EZTBXLMR4E50RiyyXp9h65edJOA/viewform"
+    is_google = is_google_form(website_url)
     scrape_result = scrape_data(website_url, api_key)
+    if is_google:
+        result = my_gemini.ask(scrape_result, "only list all of the questions in this format: [<question1>:<answer choices (if any)>, <question2>:<answer choices (if any)>, ...]")
+        print(result)
+    else:
+        print("not google form")
     # Extract data from the scraped result:
-    gemini_api_key = os.getenv("GEMINI_API_KEY")
-    extracted_data = extract_data(scrape_result, gemini_api_key)
-    print(extracted_data)
+    # gemini_api_key = os.getenv("GEMINI_API_KEY")
+    # extracted_data = extract_data(scrape_result, gemini_api_key)
+    # print(extracted_data)
 
 main()
