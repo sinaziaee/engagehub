@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'my_app'
 ]
 
 MIDDLEWARE = [
@@ -117,6 +119,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'my_app/static'),  # Point to the static folder
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
