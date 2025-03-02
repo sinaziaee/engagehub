@@ -78,7 +78,7 @@ if survey_url:
                     if response_text:
                         st.session_state[voice_key] = response_text
                         st.session_state[counter_key] = st.session_state.get(counter_key, 0) + 1
-                        st.experimental_rerun()
+                        st.rerun()  # Use st.rerun() instead of st.experimental_rerun()
         else:
             if q_type == "multiple choice":
                 responses[q_text] = st.radio(q_text, q["answer"], key=f"q_{idx}")
