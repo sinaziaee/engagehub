@@ -9,6 +9,7 @@ import base64
 from google import genai
 from google.genai import types
 import my_gemini
+import utils
 
 def scrape_data(website_url, api_key):
     app = FirecrawlApp(api_key=api_key)
@@ -70,7 +71,12 @@ def main():
     is_google = is_google_form(website_url)
     scrape_result = scrape_data(website_url, api_key)
     if is_google:
-        result = my_gemini.ask(scrape_result, "only list all of the questions in this format: [<question1>:<answer choices (if any)>, <question2>:<answer choices (if any)>, ...]")
+        result = my_gemini.ask(scrape_result, utils.read_prompt_file("prompts/question_extraction.txt"))
+        # result_processed = result.replace("```json", "").replace("```", "").strip()
+        # try:
+        #     result_processed = utils.convert_text_to_list(result_processed)
+        # except Exception as e:
+        #     print("--------------------- not able to convert to list:", e)
         print(result)
     else:
         print("not google form")

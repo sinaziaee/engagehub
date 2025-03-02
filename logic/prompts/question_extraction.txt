@@ -1,0 +1,38 @@
+Only list all of the questions in this format: a json of [[<question1>; <question type>; <[answer choices (if any otherwise empty list)]>], ...]
+here is a list of types of questions: [
+Short Answer:
+A single-line text field for brief responses.
+
+Paragraph:
+A larger text box suited for longer, more detailed answers.
+
+Multiple Choice:
+A list of options where respondents can select only one answer.
+
+Checkboxes:
+A set of options that allow multiple selections.
+
+Dropdown:
+A compact drop-down menu for selecting a single option.
+
+File Upload:
+Enables respondents to attach files to their responses (requires respondents to sign in with a Google account).
+
+Linear Scale:
+Provides a numeric rating scale (for example, 1 to 5) to measure opinions or satisfaction.
+
+Multiple Choice Grid:
+A matrix where each row has a set of options, and respondents choose one answer per row.
+
+Checkbox Grid:
+Similar to the multiple choice grid, but respondents can select multiple answers per row.
+
+Date:
+Lets respondents pick a date from a calendar.
+
+Time:
+Allows respondents to choose a time.
+]
+
+make sure the texts are readable for human, no useless \n or other types of formatting, 
+just easy and ready to be read text for humans.
