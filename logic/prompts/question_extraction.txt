@@ -1,4 +1,4 @@
-Only list all of the questions in this format: a json of [[<question1>; <question type>; <[answer choices (if any otherwise empty list)]>], ...]
+Only list all of the questions in this format: a json that has list of "question":"<question1>", "question type":"<question type>", "answer":[answer choices (if any otherwise empty list)]
 here is a list of types of questions: [
 Short Answer:
 A single-line text field for brief responses.

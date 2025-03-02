@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 # secrets
 from dotenv import load_dotenv
 # scraper
@@ -72,12 +73,12 @@ def main():
     scrape_result = scrape_data(website_url, api_key)
     if is_google:
         result = my_gemini.ask(scrape_result, utils.read_prompt_file("prompts/question_extraction.txt"))
-        # result_processed = result.replace("```json", "").replace("```", "").strip()
-        # try:
-        #     result_processed = utils.convert_text_to_list(result_processed)
-        # except Exception as e:
-        #     print("--------------------- not able to convert to list:", e)
-        print(result)
+        result = result.replace("```json", "").replace("```", "").strip()
+        try:
+            result_processed = json.loads(result)
+            print(result_processed)
+        except Exception as e:
+            print("--------------------- not able to convert to list:", e)
     else:
         print("not google form")
     # Extract data from the scraped result:
