@@ -44,15 +44,16 @@ def get_list_of_questions(website_url):
     except Exception as e:
         print(e)
         # For now, we simulate with a sample response.
-        sample_response = """
-        [
-            {"question": "What is your name?", "question type": "Short Answer", "answer": []},
-            {"question": "Will you attend the Christmas Party?", "question type": "Multiple Choice", "answer": ["Yes, I'll be there", "Sorry, can't make it"]},
-            {"question": "How many of you are attending?", "question type": "Short Answer", "answer": []},
-            {"question": "Would you like to bring a dish to share? If yes, what type of dish?", "question type": "Checkboxes", "answer": ["Mains", "Salad", "Dessert", "Drinks", "Sides/Appetizers", "Other:"]},
-            {"question": "Do you have any allergies or dietary restrictions?", "question type": "Short Answer", "answer": []},
-            {"question": "What are your suggestions for the food we should order for the party?", "question type": "Paragraph", "answer": []}
-        ]
-        """
-        return json.loads(sample_response)
+        # sample_response = """
+        # [
+        #     {"question": "What is your name?", "question type": "Short Answer", "answer": []},
+        #     {"question": "Will you attend the Christmas Party?", "question type": "Multiple Choice", "answer": ["Yes, I'll be there", "Sorry, can't make it"]},
+        #     {"question": "How many of you are attending?", "question type": "Short Answer", "answer": []},
+        #     {"question": "Would you like to bring a dish to share? If yes, what type of dish?", "question type": "Checkboxes", "answer": ["Mains", "Salad", "Dessert", "Drinks", "Sides/Appetizers", "Other:"]},
+        #     {"question": "Do you have any allergies or dietary restrictions?", "question type": "Short Answer", "answer": []},
+        #     {"question": "What are your suggestions for the food we should order for the party?", "question type": "Paragraph", "answer": []}
+        # ]
+        # """
+        # return json.loads(sample_response)
+        return []
 

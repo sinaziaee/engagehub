@@ -8,6 +8,9 @@ import utils
 import my_gemini
 import os
 from dotenv import load_dotenv
+import pandas as pd
+import form_utils  # This is the new module we created
+
 load_dotenv()
 
 # Safe version of the speak function to avoid the "run loop already started" error
@@ -65,6 +68,10 @@ def init_session_state(questions):
         st.session_state.page_loaded_time = time.time()
     if 'transcribed_text' not in st.session_state:
         st.session_state.transcribed_text = {}
+    if 'form_submitted' not in st.session_state:
+        st.session_state.form_submitted = False
+    if 'csv_saved' not in st.session_state:
+        st.session_state.csv_saved = False
 
 # Navigation functions
 def go_to_next_question():
@@ -87,14 +94,28 @@ def toggle_recording():
 def submit_form():
     st.session_state.submitted = True
 
+def save_and_submit_form(survey_url, responses, questions):
+    # Try to get a meaningful form name
+    form_name = form_utils.get_form_name(survey_url)
+    csv_filename = f"{form_name}.csv"
+    
+    # Save to CSV
+    csv_path = form_utils.save_responses_to_csv(survey_url, responses, questions)
+    st.session_state.csv_saved = True
+    
+    # Submit to Google Form
+    submission_success = form_utils.submit_google_form(survey_url, responses, questions)
+    st.session_state.form_submitted = submission_success
+    
+    return csv_path, submission_success
+
 st.title("Survey Assistant")
 
 # User provides the URL for the external survey.
 survey_url = st.text_input("Enter the survey URL:")
 # Using a default URL for demonstration
 if not survey_url:
-    # survey_url = "https://docs.google.com/forms/d/e/1FAIpQLSevpX3IMNw07QMPJgj7-Q6EZTBXLMR4E50RiyyXp9h65edJOA/viewform"
-    survey_url = "https://www.canada.ca/en/employment-social-development/programs/school-food/consultation-data-research-priorities.html"
+    survey_url = "https://docs.google.com/forms/d/e/1FAIpQLSdTYUTWzI9BgNWJaTE3ddoruDJx3bCkZCfOMAU6zxOBDtvb2g/viewform"
 if survey_url:
     # Check if the URL is a Google Form
     is_google_form = "docs.google.com/forms" in survey_url
@@ -119,22 +140,43 @@ if survey_url:
                     q_type = q["question type"].lower()
                     # Create the appropriate input widget based on question type.
                     if q_type == "short answer":
-                        responses[q_text] = st.text_input(q_text, key=f"q_{idx}")
+                        responses[idx] = st.text_input(q_text, key=f"q_{idx}")
                     elif q_type == "paragraph":
-                        responses[q_text] = st.text_area(q_text, key=f"q_{idx}")
+                        responses[idx] = st.text_area(q_text, key=f"q_{idx}")
                     elif q_type == "multiple choice":
-                        responses[q_text] = st.radio(q_text, q["answer"], key=f"q_{idx}")
+                        responses[idx] = st.radio(q_text, q["answer"], key=f"q_{idx}")
                     elif q_type == "checkboxes":
-                        responses[q_text] = st.multiselect(q_text, q["answer"], key=f"q_{idx}")
+                        responses[idx] = st.multiselect(q_text, q["answer"], key=f"q_{idx}")
                     else:
                         # Default fallback widget.
-                        responses[q_text] = st.text_input(q_text, key=f"q_{idx}")
+                        responses[idx] = st.text_input(q_text, key=f"q_{idx}")
                         
                 submitted = st.form_submit_button("Submit Responses")
                 if submitted:
+                    # Save responses to session state
+                    st.session_state.responses = responses
+                    
+                    # Save to CSV and submit to Google Form
+                    csv_path, submission_success = save_and_submit_form(survey_url, responses, questions)
+                    
+                    # Display results
+                    if st.session_state.csv_saved:
+                        st.success(f"Responses saved to {csv_path}")
+                    
+                    if st.session_state.form_submitted:
+                        st.success("Form submitted successfully!")
+                    else:
+                        st.warning("Form submission failed. Please try again or submit manually.")
+                    
                     st.write("Your responses:")
-                    st.json(responses)
-                    # Here you would add code to store the responses and autofill the external survey.
+                    
+                    # Display responses in a more user-friendly format
+                    final_responses = {}
+                    for idx, response in responses.items():
+                        question = questions[idx]["question"]
+                        final_responses[question] = response
+                    
+                    st.json(final_responses)
                     
         elif mode == "Voice Assisted":
             st.header("Voice Assisted Survey Filling")
@@ -189,7 +231,18 @@ if survey_url:
                             for idx, response in edited_responses.items():
                                 st.session_state.responses[idx] = response
                             
-                            st.success("Survey submitted successfully!")
+                            # Save to CSV and submit to Google Form
+                            csv_path, submission_success = save_and_submit_form(survey_url, st.session_state.responses, questions)
+                            
+                            # Display results
+                            if st.session_state.csv_saved:
+                                st.success(f"Responses saved to {csv_path}")
+                            
+                            if st.session_state.form_submitted:
+                                st.success("Form submitted successfully!")
+                            else:
+                                st.warning("Form submission failed. Please try again or submit manually.")
+                            
                             st.write("Your final responses:")
                             
                             # Display final responses in a more user-friendly format
@@ -442,7 +495,3 @@ if survey_url:
                 st.error(f"Error transcribing audio: {str(e)}")
         
         # Submit button
-        if st.button("Submit Response"):
-            st.success("Response submitted successfully!")
-            st.write("Your response:")
-            st.write(st.session_state.generic_responses)
