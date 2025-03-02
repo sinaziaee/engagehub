@@ -64,6 +64,20 @@ def extract_data(scraped_result, api_key):
         buffer_data += chunk.text
     return buffer_data
 
+def get_list_of_questions(website_url):
+    load_dotenv()
+    api_key=os.getenv("SCRAPE_API_KEY")
+    scrape_result = scrape_data(website_url, api_key)
+    result = my_gemini.ask(scrape_result, utils.read_prompt_file("prompts/question_extraction.txt"))
+    result = result.replace("```json", "").replace("```", "").strip()
+    try:
+        result_processed = json.loads(result)
+        # print(result_processed)
+    except Exception as e:
+        print("--------------------- not able to convert to list:", e)
+    return result_processed
+
+
 def main():
     load_dotenv()
     api_key=os.getenv("SCRAPE_API_KEY")
