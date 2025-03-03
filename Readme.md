@@ -97,12 +97,23 @@ Below are some screenshots from the project showcasing the user interface and da
 
 ---
 
+
 ## Installation & Usage
 
-1. **Clone the Repository:**
+   First clone the repository
    ```bash
-   git clone https://github.com/yourusername/yourproject.git
+   git clone https://github.com/sinaziaee/engagehub.git
+   ```
+   
+   Then create .env file in logic folder with these values:
+   ```bash
+   SCRAPE_API_KEY=your_scrape_api_key_here
+   GEMINI_API_KEY=your_gemini_api_key_here
+   GOOGLE_PLACES_API_KEY=your_google_places_api_key_here
+   ```
+   Then perform these command in terminal
 
+   ```bash
    pip install -r requirements.txt
 
    python manage.py runserver
