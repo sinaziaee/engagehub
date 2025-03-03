@@ -130,6 +130,6 @@ Below are some screenshots from the project showcasing the user interface and da
 - **Mobile App Integration:** Developing native mobile applications to further improve accessibility.
 - **Advanced Customization:** Allowing users to create and deploy custom surveys and data visualizations.
 
-## Current issues
+## Current Bugs
 - **Voice Input Display Issue:** Recorded voice is not shown in the textbox and instead is output to the terminal.
 - **Crawling Timeout:** The crawling process times out after every 100 crawling requests.
