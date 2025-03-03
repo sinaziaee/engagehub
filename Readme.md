@@ -12,8 +12,11 @@ An innovative solution that revolutionizes public engagement in decision-making 
 - [Key Features](#key-features)
 - [Screenshots](#screenshots)
 - [Technologies Used](#technologies-used)
+- [Resources](#resources)
 - [Installation & Usage](#installation--usage)
+- [How to Run](#how-to-run)
 - [Future Enhancements](#future-enhancements)
+- [Current Bugs](#current-bugs)
 - [License](#license)
 
 ---
@@ -83,8 +86,39 @@ Below are some screenshots from the project showcasing the user interface and da
 
 ---
 
+## Resources
+
+- **Gemini:** Utilized as the LLM for advanced language understanding.
+- **Firecrawl & Selenium:** Employed for web crawling and automated data extraction.
+- **Google Places API:** Provides access to public reviews.
+- **Streamlit:** Powers the dashboards and chatbot interfaces.
+- **pyttsx3:** Enables text-to-speech functionality.
+- **SpeechRecognition:** Handles speech-to-text conversion for voice input.
+
+---
+
 ## Installation & Usage
 
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/yourusername/yourproject.git
+
+   pip install -r requirements.txt
+
+   python manage.py runserver
+
+   cd logic
+   streamlit run chat.py
+   streamlit run rag_chat.py
+   streamlit run dashboard_reviews.py
+   streamlit run dashboard_surveys.py
+   ```
+## Future Enhancements
+- **Enhanced Multi-Language Support:** Expanding voice recognition and NLP capabilities for multiple languages.
+- **Real-Time Data Integration:** Improving the real-time analytics features for faster feedback processing.
+- **Mobile App Integration:** Developing native mobile applications to further improve accessibility.
+- **Advanced Customization:** Allowing users to create and deploy custom surveys and data visualizations.
+
+## Current issues
+- **Voice Input Display Issue:** Recorded voice is not shown in the textbox and instead is output to the terminal.
+- **Crawling Timeout:** The crawling process times out after every 100 crawling requests.
