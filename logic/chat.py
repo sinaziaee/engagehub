@@ -114,8 +114,8 @@ st.title("Survey Assistant")
 # User provides the URL for the external survey.
 survey_url = st.text_input("Enter the survey URL:")
 # Using a default URL for demonstration
-if not survey_url:
-    survey_url = "https://docs.google.com/forms/d/e/1FAIpQLSdTYUTWzI9BgNWJaTE3ddoruDJx3bCkZCfOMAU6zxOBDtvb2g/viewform"
+# if not survey_url:
+#     survey_url = "https://docs.google.com/forms/d/e/1FAIpQLSdTYUTWzI9BgNWJaTE3ddoruDJx3bCkZCfOMAU6zxOBDtvb2g/viewform"
 if survey_url:
     # Check if the URL is a Google Form
     is_google_form = "docs.google.com/forms" in survey_url
