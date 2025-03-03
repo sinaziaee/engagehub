@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Speech to Text</title>
+</head>
+<body>
+    <h1>Real-Time Speech to Text</h1>
+    <button id="recordBtn">🎤 Start Recording</button>
+    <p id="output">Waiting for speech...</p>
+
+    <script>
+        let isRecording = false;
+        let mediaRecorder;
+        let audioChunks = [];
+        let socket = new WebSocket("ws://127.0.0.1:8000/ws/audio/");
+    
+        socket.onopen = function() {
+            document.getElementById("output").innerText = "Connected to WebSocket!";
+        };
+    
+        socket.onmessage = function(event) {
+            let data = JSON.parse(event.data);
+            document.getElementById("output").innerText = "You said: " + data.text;
+        };
+    
+        document.getElementById("recordBtn").addEventListener("click", function() {
+            if (!isRecording) {
+                startRecording();
+            } else {
+                stopRecording();
+            }
+        });
+    
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/wav" }); // Force WAV format
+                    mediaRecorder.start();
+                    document.getElementById("recordBtn").innerText = "⏹ Stop Recording";
+                    isRecording = true;
+                    audioChunks = [];
+    
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+    
+                    mediaRecorder.onstop = () => {
+                        document.getElementById("recordBtn").innerText = "🎤 Start Recording";
+                        isRecording = false;
+                        let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+    
+                        let reader = new FileReader();
+                        reader.readAsDataURL(audioBlob);
+                        reader.onloadend = function() {
+                            let base64data = reader.result.split(",")[1];
+                            socket.send(JSON.stringify({ "audio": base64data }));
+                        };
+                    };
+                })
+                .catch(error => console.error("Microphone access denied!", error));
+        }
+    </script>
+</body>
+</html>
