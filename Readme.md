@@ -62,16 +62,13 @@ This combination of automated voice surveys, AI chat interaction, and advanced a
 ## Screenshots
 
 Below are some screenshots from the project showcasing the user interface and data visualization components:
-![Screenshot 10](figs/10.png)
-![Screenshot 1](figs/1.png)
-![Screenshot 2](figs/2.png)
-![Screenshot 3](figs/3.png)
-![Screenshot 4](figs/4.png)
-![Screenshot 5](figs/5.png)
-![Screenshot 6](figs/6.png)
-![Screenshot 7](figs/7.png)
-![Screenshot 8](figs/8.png)
-![Screenshot 9](figs/9.png)
+| ![Screenshot 10](figs/10.png) | ![Screenshot 1](figs/1.png) |
+| --------------------------- | --------------------------- |
+| ![Screenshot 2](figs/2.png)  | ![Screenshot 3](figs/3.png)  |
+| ![Screenshot 4](figs/4.png)  | ![Screenshot 5](figs/5.png)  |
+| ![Screenshot 6](figs/6.png)  | ![Screenshot 7](figs/7.png)  |
+| ![Screenshot 8](figs/8.png)  | ![Screenshot 9](figs/9.png)  |
+
 
 *Note: Replace the file paths with the actual paths where the images are stored in your repository.*
 
