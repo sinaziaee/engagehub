@@ -119,10 +119,7 @@ Below are some screenshots from the project showcasing the user interface and da
    python manage.py runserver
 
    cd logic
-   streamlit run chat.py
-   streamlit run rag_chat.py
-   streamlit run dashboard_reviews.py
-   streamlit run dashboard_surveys.py
+   streamlit run app.py
    ```
 ## Future Enhancements
 - **Enhanced Multi-Language Support:** Expanding voice recognition and NLP capabilities for multiple languages.
