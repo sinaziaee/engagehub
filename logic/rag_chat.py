@@ -5,11 +5,12 @@ import os
 from typing import List, Dict, Any
 import tempfile
 from dotenv import load_dotenv
+
 load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 # Configure page
-st.set_page_config(page_title="CSV Chat Assistant", layout="wide")
+# st.set_page_config(page_title="CSV Chat Assistant", layout="wide")
 
 # Get the absolute path of the current script directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -139,6 +140,17 @@ def main():
     st.title("Ask from public Data")
     
     if not st.session_state.dataframes:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        if current_dir == '':  # In some environments, __file__ might not work as expected
+            current_dir = os.getcwd()
+
+        # File paths configuration with absolute paths
+        CSV_FILE_1_PATH = os.path.join(current_dir, "form_responses.csv")
+        CSV_FILE_2_PATH = os.path.join(current_dir, "park_reviews.csv")
+        CSV_FILE_1_NAME = "dataset1"  # Name to identify the first dataset
+        CSV_FILE_2_NAME = "dataset2"  # Name to identify the second dataset
+        st.session_state.dataframes[CSV_FILE_1_NAME] = pd.read_csv(CSV_FILE_1_PATH)
+        st.session_state.dataframes[CSV_FILE_2_NAME] = pd.read_csv(CSV_FILE_2_PATH)
         print("No datasets loaded. Check file paths at the top of the code.")
     else:
         pass
