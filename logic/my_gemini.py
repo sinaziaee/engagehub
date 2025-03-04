@@ -5,9 +5,10 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-def ask(context, question):
+def ask(context, question, gemini_api_key=None):
     load_dotenv()
-    gemini_api_key = os.getenv("GEMINI_API_KEY")
+    if gemini_api_key is None:
+        gemini_api_key = os.getenv("GEMINI_API_KEY")
     client = genai.Client(
         api_key=gemini_api_key,
     )
